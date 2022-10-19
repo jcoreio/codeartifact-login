@@ -1,0 +1,16 @@
+// @flow
+
+declare export default function codeartifactLogin(options: {|
+  awsConfig?: { ... },
+  codeartifact?: any,
+  domain?: string,
+  domainOwner?: string,
+  repository?: string,
+  durationSeconds?: number,
+  namespace?: string,
+  cwd?: string,
+  location?: 'global' | 'user' | 'project',
+|}): Promise<{|
+  authorizationToken: string,
+  repositoryEndpoint: string,
+|}>
