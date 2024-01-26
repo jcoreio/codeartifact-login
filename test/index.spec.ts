@@ -148,7 +148,6 @@ describe(`codeartifactLogin`, function () {
       [
         ...Object.entries({
           registry: repositoryEndpoint,
-          [`${repositoryEndpoint.replace(/^https:/, '')}:always-auth`]: true,
           [`${repositoryEndpoint.replace(/^https:/, '')}:_authToken`]:
             FAKE_AUTH_TOKEN,
         }),
@@ -178,7 +177,6 @@ describe(`codeartifactLogin`, function () {
       [
         ...Object.entries({
           registry: repositoryEndpoint,
-          [`${repositoryEndpoint.replace(/^https:/, '')}:always-auth`]: true,
           [`${repositoryEndpoint.replace(/^https:/, '')}:_authToken`]:
             FAKE_AUTH_TOKEN,
         }),
@@ -215,7 +213,6 @@ describe(`codeartifactLogin`, function () {
       [
         ...Object.entries({
           [`@${namespace}:registry`]: repositoryEndpoint,
-          [`${repositoryEndpoint.replace(/^https:/, '')}:always-auth`]: true,
           [`${repositoryEndpoint.replace(/^https:/, '')}:_authToken`]:
             FAKE_AUTH_TOKEN,
         }),
@@ -246,7 +243,6 @@ describe(`codeartifactLogin`, function () {
       [
         ...Object.entries({
           [`@${namespace}:registry`]: repositoryEndpoint,
-          [`${repositoryEndpoint.replace(/^https:/, '')}:always-auth`]: true,
           [`${repositoryEndpoint.replace(/^https:/, '')}:_authToken`]:
             FAKE_AUTH_TOKEN,
         }),
@@ -283,7 +279,6 @@ describe(`codeartifactLogin`, function () {
       [
         ...Object.entries({
           [`${namespace}:registry`]: repositoryEndpoint,
-          [`${repositoryEndpoint.replace(/^https:/, '')}:always-auth`]: true,
           [`${repositoryEndpoint.replace(/^https:/, '')}:_authToken`]:
             FAKE_AUTH_TOKEN,
         }),

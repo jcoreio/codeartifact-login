@@ -90,8 +90,6 @@ export default async function codeartifactLogin(options: {
           []),
       registryKey,
       repositoryEndpoint,
-      `${repositoryEndpoint.replace(/^https:/, '')}:always-auth`,
-      'true',
       `${repositoryEndpoint.replace(/^https:/, '')}:_authToken`,
       authorizationToken,
     ],
