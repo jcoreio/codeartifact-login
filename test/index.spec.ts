@@ -1,5 +1,3 @@
-/* eslint-env mocha */
-
 import { describe, it } from 'mocha'
 import { expect } from 'chai'
 import codeartifactLogin from '../src/index'
@@ -21,7 +19,7 @@ describe(`codeartifactLogin`, function () {
     npm_config_registry: '',
   }
 
-  let cwd
+  let cwd: string
   let FAKE_AUTH_TOKEN = 'lkajsdlfkjasdfa'
   const FAKE_ACCT_ID = '12345678'
 

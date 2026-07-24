@@ -17,6 +17,7 @@ export default async function codeartifactLogin(options: {
   cwd?: string
   location?: 'global' | 'user' | 'project'
   env?: NodeJS.ProcessEnv
+  dryRun?: boolean
 }): Promise<{ authorizationToken: string; repositoryEndpoint: string }> {
   let { awsConfig = {} } = options
   const {
@@ -25,6 +26,7 @@ export default async function codeartifactLogin(options: {
     cwd = process.cwd(),
     location,
     env,
+    dryRun,
   } = options
   const registryKey = `${namespace ? `${getScope(namespace)}:` : ''}registry`
   if ((options.domain == null) !== (options.repository == null)) {
@@ -34,14 +36,14 @@ export default async function codeartifactLogin(options: {
   }
 
   const { domain, domainOwner, repository, region } =
-    options.domain != null && options.repository != null
-      ? {
-          domain: options.domain,
-          domainOwner: options.domainOwner,
-          repository: options.repository,
-          region: awsConfig.region,
-        }
-      : await parseNpmRegistry({ registryKey, cwd, location, env })
+    options.domain != null && options.repository != null ?
+      {
+        domain: options.domain,
+        domainOwner: options.domainOwner,
+        repository: options.repository,
+        region: awsConfig.region,
+      }
+    : await parseNpmRegistry({ registryKey, cwd, location, env })
 
   if (typeof region === 'string') awsConfig = { ...awsConfig, region }
 
@@ -79,31 +81,33 @@ export default async function codeartifactLogin(options: {
     )
   }
 
-  await execa(
-    'npm',
-    [
-      'config',
-      'set',
-      ...(location
-        ? [`--location=${location}`]
-        : // istanbul ignore next
-          []),
-      registryKey,
-      repositoryEndpoint,
-      `${repositoryEndpoint.replace(/^https:/, '')}:_authToken`,
-      authorizationToken,
-    ],
-    { cwd, stdio: 'inherit', env }
-  )
-  // eslint-disable-next-line no-console
-  console.error(
-    `updated npm${
-      location
-        ? ` ${location}`
-        : // istanbul ignore next
-          ''
-    } config`
-  )
+  if (!dryRun) {
+    await execa(
+      'npm',
+      [
+        'config',
+        'set',
+        ...(location ?
+          [`--location=${location}`]
+          // istanbul ignore next
+        : []),
+        registryKey,
+        repositoryEndpoint,
+        `${repositoryEndpoint.replace(/^https:/, '')}:_authToken`,
+        authorizationToken,
+      ],
+      { cwd, stdio: 'inherit', env }
+    )
+    // eslint-disable-next-line no-console
+    console.error(
+      `updated npm${
+        location ?
+          ` ${location}`
+          // istanbul ignore next
+        : ''
+      } config`
+    )
+  }
 
   return { authorizationToken, repositoryEndpoint }
 }
@@ -138,10 +142,10 @@ async function parseNpmRegistry({
       [
         'config',
         'get',
-        ...(location
-          ? [`--location=${location}`]
-          : // istanbul ignore next
-            []),
+        ...(location ?
+          [`--location=${location}`]
+          // istanbul ignore next
+        : []),
         registryKey,
       ],
       { cwd, stdio: 'pipe', encoding: 'utf8', env }

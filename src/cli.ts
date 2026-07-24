@@ -13,7 +13,7 @@ type Options = {
   location?: string
 }
 
-yargs
+void yargs
   .scriptName('codeartifact-login')
   .command(
     '$0',
